@@ -11,9 +11,12 @@ function sortArray(array) {
             return sortedArray
         }
     }
+    if (array.length === 1) {
+        return array
+    }
 }
 
-function mergeSortLogic(index, tempArray) {
+function mergeLogic(index, tempArray) {
     let sortedArray = []
     sortedArray.push(tempArray[index])
     tempArray.splice(index,1)
@@ -21,19 +24,64 @@ function mergeSortLogic(index, tempArray) {
     return sortedArray.concat(tempArray)
 }
 
-function mergeSort(array) {
-    if (array.length > 3) {
-        //
+function mergeSort(array, sortedArray) {
+    let startIndex
+    let tempArray = []
+
+    if (sortedArray !== undefined) {
+        tempArray = sortedArray.concat(array)
+        startIndex = sortedArray.length-1
+    } else {
+        startIndex = 0
     }
-    if (array.length === 3) {
-        let leftArray = array.splice(0,1)
-        let rightArray = array.splice(0, 2)
-        let tempArray = leftArray.concat(sortArray(rightArray))
-        let sortedArray = (tempArray[0] < tempArray[1]) ? mergeSortLogic(0, tempArray) : mergeSortLogic(1, tempArray)
-        return sortedArray
-    } 
-    if (array.length === 2) {
-        return sortArray(array)
+
+    if (array.length === 1 && sortedArray !== undefined) {
+        if (array[0] < sortedArray[0]) {
+            sortedArray = array.concat(sortedArray)
+            return sortedArray
+        } else {//sortedArray[0] < array[0]
+            tempArray = []
+            tempArray.push(sortedArray[0])
+            sortedArray.splice(0,1)
+
+            if (array[0] < sortedArray[0]) {
+                tempArray.push(array[0])
+                sortedArray = tempArray.concat(sortedArray)
+                return sortedArray
+            } else {//sortedArray[0] < array[0]
+                tempArray.push(sortedArray[0])
+                sortedArray.splice(0,1)
+
+                if (array[0] < sortedArray[0]) {
+                    tempArray.push(array[0])
+                    sortedArray = tempArray.concat(sortedArray)
+                    return sortedArray
+                } else {
+                    tempArray.push(sortedArray[0])
+                    sortedArray.splice(0,1)
+                    sortedArray = tempArray.concat(array)
+                    return sortedArray
+                }
+            }
+        }
+    }
+
+    if (array.length === 1 && sortedArray === undefined) {
+        return array
+    }    
+    if (array.length > 1) {
+        let leftArray = array.splice(startIndex,1)
+        let rightArray = array.splice(startIndex, 2)
+        tempArray = leftArray.concat(sortArray(rightArray))
+        sortedArray = (tempArray[0] < tempArray[1]) ? mergeLogic(0, tempArray) : mergeLogic(1, tempArray)
+
+        if (array.length === startIndex) {
+            //console.log('Line 79 ', array)
+            return sortedArray
+        } else {
+            //console.log('Line 82 ', array)
+            return mergeSort(array, sortedArray)
+        }
     }
     if (array.length < 1) {
         return 'ERROR: Array has no elements'
@@ -44,22 +92,3 @@ function mergeSort(array) {
 module.exports = {
     z: mergeSort
 };
-
-/*
-function mergeSort(array) {
-    if (array.length > 1) {
-        if (array.length > 2) {
-            let leftArray = array.splice(0,1)
-            let rightArray = array.splice(0, 2)
-            let tempArray = leftArray.concat(sortArray(rightArray))
-            
-            let sortedArray = (tempArray[0] < tempArray[1]) ? mergeSortLogic(0, tempArray) : mergeSortLogic(1, tempArray)
-            return sortedArray
-        } else { //array.length === 2
-            return sortArray(array)
-        }
-    } else { //array.length === 0
-        return 'ERROR: Array has no elements'
-    }
-}
-*/
