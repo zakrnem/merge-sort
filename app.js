@@ -24,6 +24,18 @@ function mergeLogic(index, tempArray) {
     return sortedArray.concat(tempArray)
 }
 
+function mergeIfStep(tempArray, sortedArray, arrayItem) {
+    tempArray.push(arrayItem)
+    sortedArray = tempArray.concat(sortedArray)
+    return sortedArray
+}
+
+function mergeElseStep(tempArray, sortedArray, arrayItem) {
+    tempArray.push(arrayItem)
+    sortedArray.splice(0,1)
+    return tempArray
+}
+
 function mergeSort(array, sortedArray) {
     let startIndex
     let tempArray = []
@@ -36,31 +48,22 @@ function mergeSort(array, sortedArray) {
     }
 
     if (array.length === 1 && sortedArray !== undefined) {
+        tempArray = []
         if (array[0] < sortedArray[0]) {
-            sortedArray = array.concat(sortedArray)
-            return sortedArray
-        } else {//sortedArray[0] < array[0]
-            tempArray = []
-            tempArray.push(sortedArray[0])
-            sortedArray.splice(0,1)
+            return mergeIfStep(tempArray, sortedArray, array[0])
+        } else {
+            tempArray = mergeElseStep(tempArray, sortedArray, sortedArray[0])
 
             if (array[0] < sortedArray[0]) {
-                tempArray.push(array[0])
-                sortedArray = tempArray.concat(sortedArray)
-                return sortedArray
-            } else {//sortedArray[0] < array[0]
-                tempArray.push(sortedArray[0])
-                sortedArray.splice(0,1)
+                return mergeIfStep(tempArray, sortedArray, array[0])
+            } else {
+                tempArray = mergeElseStep(tempArray, sortedArray, sortedArray[0])
 
                 if (array[0] < sortedArray[0]) {
-                    tempArray.push(array[0])
-                    sortedArray = tempArray.concat(sortedArray)
-                    return sortedArray
+                    return mergeIfStep(tempArray, sortedArray, array[0])
                 } else {
-                    tempArray.push(sortedArray[0])
-                    sortedArray.splice(0,1)
-                    sortedArray = tempArray.concat(array)
-                    return sortedArray
+                    tempArray = mergeElseStep(tempArray, sortedArray, sortedArray[0])
+                    return mergeIfStep(tempArray, sortedArray, array[0])
                 }
             }
         }
