@@ -31,7 +31,9 @@ function mergeIfStep(tempArray, sortedArray, arrayItem) {
 }
 
 function mergeElseStep(tempArray, sortedArray) {
-    tempArray.push(sortedArray[0])
+    if (sortedArray[0] !== undefined) {
+        tempArray.push(sortedArray[0])
+    }
     sortedArray.splice(0,1)
     return tempArray
 }
@@ -49,10 +51,9 @@ function recursiveMergeSort(sortedArray, array, tempArray) {
             tempArray = mergeElseStep(tempArray, sortedArray)
             return mergeIfStep(tempArray, sortedArray, array[0])
 
-        case ((array[0] > sortedArray[0]) && sortedArray.length === 0):
-            console.log('Hey') //Not executing
+        default:
             tempArray = mergeElseStep(tempArray, sortedArray)
-            return mergeIfStep(tempArray, sortedArray, sortedArray[0])
+            return mergeIfStep(tempArray, sortedArray, array[0])
     }
 }
 
