@@ -54,23 +54,6 @@ function recursiveMergeSort(sortedArray, array, tempArray) {
             tempArray = mergeElseStep(tempArray, sortedArray)
             return mergeIfStep(tempArray, sortedArray, sortedArray[0])
     }
-    /* if (sortedArray.length === 0) {
-        if (array[0] < sortedArray[0]) {
-            tempArray = mergeElseStep(tempArray, sortedArray)
-            return mergeIfStep(tempArray, sortedArray, array[0])
-        } else {
-            tempArray = mergeElseStep(tempArray, sortedArray)
-            return mergeIfStep(tempArray, sortedArray, sortedArray[0])
-        }
-    } else {
-        if (array[0] < sortedArray[0]) {
-            return mergeIfStep(tempArray, sortedArray, array[0])
-        } else {
-            tempArray = mergeElseStep(tempArray, sortedArray)
-            return recursiveMergeSort(sortedArray, array, tempArray)
-        }
-    }    
-} */
 }
 
 function mergeSort(array, sortedArray) {
@@ -79,36 +62,10 @@ function mergeSort(array, sortedArray) {
 
     if (sortedArray !== undefined) {
         return recursiveMergeSort(sortedArray, array, tempArray)
-        /* tempArray = sortedArray.concat(array)
-        startIndex = sortedArray.length-1 */
     } else {
         startIndex = 0
     }
 
-   /*  if ( array.length === 1 &&  sortedArray !== undefined) {
-        tempArray = []
-        return recursiveMergeSort(sortedArray, array, tempArray)
-        /* tempArray = []
-        if (array[0] < sortedArray[0]) {
-            return mergeIfStep(tempArray, sortedArray, array[0])
-        } else {
-            tempArray = mergeElseStep(tempArray, sortedArray)
-
-            if (array[0] < sortedArray[0]) {
-                return mergeIfStep(tempArray, sortedArray, array[0])
-            } else {
-                tempArray = mergeElseStep(tempArray, sortedArray)
-
-                if (array[0] < sortedArray[0]) {
-                    return mergeIfStep(tempArray, sortedArray, array[0])
-                } else {
-                    tempArray = mergeElseStep(tempArray, sortedArray)
-                    return mergeIfStep(tempArray, sortedArray, array[0])
-                }
-            }
-        }
-    }
- */
     if (array.length === 1 && sortedArray === undefined) {
         return array
     }    
