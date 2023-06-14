@@ -1,95 +1,31 @@
-function sortArray(array) {
+function merge(left, right) {
     let sortedArray = []
-    if (array.length === 2) {
-        if (array[0] < array[1]) {
-            sortedArray.push(array[0])
-            sortedArray.push(array[1])
-            return sortedArray
-        } else {
-            sortedArray.push(array[1])
-            sortedArray.push(array[0])
-            return sortedArray
-        }
+    while (left.length && right.length) {
+      if (left[0] < right[0]) {
+        sortedArray.push(left.shift())
+      } else {
+        sortedArray.push(right.shift())
+      }
     }
-    if (array.length === 1) {
-        return array
-    }
+
+    return [...sortedArray, ...left, ...right]
 }
 
-function mergeLogic(index, tempArray) {
-    let sortedArray = []
-    sortedArray.push(tempArray[index])
-    tempArray.splice(index,1)
-    tempArray = sortArray(tempArray)
-    return sortedArray.concat(tempArray)
+function mergeSort(array) {
+    if (array.length <= 1) return array
+    let mid = Math.floor(array.length / 2)
+    
+    let left = mergeSort(array.slice(0, mid))
+    let right = mergeSort(array.slice(mid))
+
+    return merge(left, right)
 }
 
-function mergeIfStep(tempArray, sortedArray, arrayItem) {
-    tempArray.push(arrayItem)
-    sortedArray = tempArray.concat(sortedArray)
-    return sortedArray
+function test() {
+    return mergeSort([7, 2, 6, 9, 3, 5, 1, 8])
 }
-
-function mergeElseStep(tempArray, sortedArray) {
-    if (sortedArray[0] !== undefined) {
-        tempArray.push(sortedArray[0])
-    }
-    sortedArray.splice(0,1)
-    return tempArray
-}
-
-function recursiveMergeSort(sortedArray, array, tempArray) {
-    switch (true) {
-        case ((array[0] < sortedArray[0]) && sortedArray.length > 0):
-            return mergeIfStep(tempArray, sortedArray, array[0])
-
-        case ((array[0] > sortedArray[0]) && sortedArray.length > 0):
-            tempArray = mergeElseStep(tempArray, sortedArray)
-            return recursiveMergeSort(sortedArray, array, tempArray)
-
-        case ((array[0] < sortedArray[0]) && sortedArray.length === 0):
-            tempArray = mergeElseStep(tempArray, sortedArray)
-            return mergeIfStep(tempArray, sortedArray, array[0])
-
-        default:
-            tempArray = mergeElseStep(tempArray, sortedArray)
-            return mergeIfStep(tempArray, sortedArray, array[0])
-    }
-}
-
-function mergeSort(array, sortedArray) {
-    let startIndex
-    let tempArray = []
-
-    if (sortedArray !== undefined) {
-        return recursiveMergeSort(sortedArray, array, tempArray)
-    } else {
-        startIndex = 0
-    }
-
-    if (array.length === 1 && sortedArray === undefined) {
-        return array
-    }    
-    if (array.length > 1) {
-        let leftArray = array.splice(startIndex,1)
-        let rightArray = array.splice(startIndex, 2)
-        tempArray = leftArray.concat(sortArray(rightArray))
-        sortedArray = (tempArray[0] < tempArray[1]) ? mergeLogic(0, tempArray) : mergeLogic(1, tempArray)
-
-        if (array.length === startIndex) {
-            //console.log('Line 79 ', array)
-            return sortedArray
-        } else {
-            //console.log('Line 82 ', array)
-            return mergeSort(array, sortedArray)
-        }
-    }
-    if (array.length < 1) {
-        return 'ERROR: Array has no elements'
-    }
-}
-
 
 module.exports = {
-    z: mergeSort
+    z: mergeSort,
+    y: test
 };
